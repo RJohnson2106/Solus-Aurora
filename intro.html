@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solus Aurora - Intro</title>
+  <style>
+    /* Import custom fonts */
+    @font-face {
+      font-family: 'Along Sans';
+      src: url('fonts/along_sans/AlongSanss2-Bold.otf') format('opentype');
+      font-weight: bold; 
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Futuristic';
+      src: url('fonts/megatrans-font/MegatransdemoRegular-8M9B0.otf') format('opentype'); 
+      font-weight: normal; 
+      font-style: normal;
+    }
+
+    /* General body styles */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* Align items to top for parallax spacing */
+      height: 110vh;           /* Full height for limited scrolling */
+      overflow-x: hidden;      /* Prevent horizontal overflow */
+      overflow-y: scroll;      /* Enable vertical scrolling */
+      position: relative;      /* For positioning video and content */
+      font-family: 'Along Sans', sans-serif; /* Default font */
+    }
+
+    /* Video Background Styles */
+    #backgroundVideo {
+      position: fixed;         /* Fixed to create parallax effect */
+      top: 50%;                /* Center video horizontally */
+      left: 50%;
+      min-width: 100%;         /* Ensure video covers entire width */
+      min-height: 100%;        /* Ensure video covers entire height */
+      width: auto;
+      height: auto;
+      z-index: -1;             /* Send video behind content */
+      transform: translate(-50%, -50%); /* Center the video */
+      object-fit: cover;       /* Cover screen without distortion */
+    }
+
+    /* Main content container */
+    #introContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;              /* Place content above video */
+      opacity: 1;
+      transition: opacity 0.5s ease; /* Smooth fade-out effect */
+      position: relative;
+      padding-top: 50px;       /* Space content from top */
+      padding-bottom: 30px;    /* Bottom padding for balance */
+    }
+
+    /* Header Styles */
+    h1 {
+      font-size: 2.5em;        /* Large but responsive font size */
+      margin-bottom: 30px;     /* Space between header and content */
+      color: white;
+      text-align: center;
+      transition: transform 0.5s ease; /* Smooth parallax scrolling */
+    }
+
+    /* Paragraph Styles */
+    p {
+      max-width: 800px;
+      padding: 15px;
+      color: white;            /* White text for better contrast */
+      background-color: transparent; /* Transparent background */
+      text-align: center;
+      font-family: 'Futuristic', sans-serif; /* Custom font for paragraphs */
+      font-size: 1.1em;        /* Slightly smaller font size */
+      line-height: 1.5;        /* Comfortable line spacing */
+      margin-bottom: 30px;     /* Space between paragraph and button */
+      transition: transform 0.5s ease; /* Parallax scrolling effect */
+    }
+
+    /* Button Styles */
+    button {
+      padding: 12px 25px;      /* Button padding for proper size */
+      background-color: white; /* White background */
+      color: black;            /* Black text */
+      border: none;
+      border-radius: 20px;     /* Rounded corners */
+      font-size: 1.1em;
+      font-family: 'Along Sans', sans-serif; /* Use custom font for button */
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+      transition: transform 0.5s ease; /* Parallax scrolling effect */
+    }
+
+    /* Button hover effect */
+    button:hover {
+      background-color: #f0f0f0; /* Light grey background on hover */
+      color: #333;               /* Dark grey text on hover */
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background Video -->
+  <video id="backgroundVideo" autoplay loop muted>
+    <source src="footage/NASATRIM.mp4" type="video/mp4"> <!-- Update with correct video path -->
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Intro Container -->
+  <div id="introContainer">
+    <h1 id="headerText">WELCOME TO SOLUS AURORA</h1>
+    <p id="bodyText">
+      Geomagnetic storms are powerful disturbances in Earth's magnetic field caused by solar activity, particularly coronal mass ejections (CMEs). 
+      When charged particles from the Sun collide with Earth's magnetosphere, they create the stunning aurora borealis (Northern Lights).
+      This website showcases data and analysis from the intense geomagnetic storms of May 2024, which generated some of the most vivid auroras seen worldwide.
+      Our platform features an interactive aurora visibility heatmap, helping users explore the regions most affected.
+      We also provide visualizations of solar winds—streams of charged particles from the Sun that drive these storms and can disrupt satellite communications, GPS, and power grids.
+    </p>
+    <button id="enterBtn">E N T E R</button> <!-- Enter button -->
+  </div>
+
+  <script>
+    // Function to handle button click and fade-out before navigation
+    document.getElementById('enterBtn').addEventListener('click', function() {
+      const introContainer = document.getElementById('introContainer');
+      introContainer.style.opacity = '0'; // Start fade-out effect
+
+      // Wait for fade-out to finish before redirecting
+      setTimeout(function() {
+        window.location.href = 'index.html'; // Redirect to main page
+      }, 500); // Match with CSS transition duration
+    });
+
+    // Parallax scrolling effect
+    window.addEventListener('scroll', function() {
+      const scrollPos = window.pageYOffset; // Get scroll position
+      const headerText = document.getElementById('headerText');
+      const bodyText = document.getElementById('bodyText');
+      const enterBtn = document.getElementById('enterBtn');
+      
+      // Apply parallax effect by adjusting transform based on scroll
+      headerText.style.transform = 'translateY(' + scrollPos * 0.5 + 'px)';
+      bodyText.style.transform = 'translateY(' + scrollPos * 0.3 + 'px)';
+      enterBtn.style.transform = 'translateY(' + scrollPos * 0.1 + 'px)';
+    });
+  </script>
+
+</body>
+</html>

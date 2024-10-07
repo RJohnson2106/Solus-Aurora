@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Solus Aurora</title>
+  <style>
+    /* Import custom Futuristic font */
+    @font-face {
+      font-family: 'Futuristic';
+      src: url('fonts/megatrans-font/MegatransdemoRegular-8M9B0.otf') format('opentype'); /* Update with your font path */
+      font-weight: normal; 
+      font-style: normal;
+    }
+    
+    /* General styles for body and canvas */
+    body { 
+      margin: 0; 
+      overflow: hidden; /* Hide overflow to prevent scrolling */
+    }
+
+    canvas { 
+      display: block; /* Ensure canvas fills entire view */
+    }
+
+    /* Button Styles */
+    #toggleMarkersBtn, 
+    #toggleAuroraHeatmapBtn, 
+    #toggleSolarWindBtn {
+      position: absolute;
+      top: 10px;
+      font-size: 12px;
+      padding: 10px;
+      background-color: #ffffff;  /* White background */
+      color: rgb(0, 0, 0);        /* Black text */
+      border: none;
+      font-family: 'Futuristic', sans-serif; /* Use custom font for buttons */
+      border-radius: 5px;         /* Rounded corners */
+      cursor: pointer;
+    }
+
+    /* Position each button appropriately */
+    #toggleMarkersBtn { left: 10px; }
+    #toggleAuroraHeatmapBtn { left: 130px; }
+    #toggleSolarWindBtn { left: 300px; } /* New button positioned */
+
+    /* Button hover effect */
+    #toggleMarkersBtn:hover, 
+    #toggleAuroraHeatmapBtn:hover, 
+    #toggleSolarWindBtn:hover {
+      background-color: #4d6176; /* Darken background on hover */
+    }
+
+    /* Heatmap container (initially hidden) */
+    #heatmapContainer {
+      display: none; 
+      width: 1024px; 
+      height: 512px; 
+    }
+
+    /* Legend for Aurora Heatmap */
+    #legendContainer {
+      position: absolute;
+      bottom: 20px;
+      left: 10px;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column; /* Stack items vertically */
+      align-items: center;
+    }
+
+    /* Gradient for Heatmap Legend */
+    #legendGradient {
+      width: 200px;
+      height: 20px;
+      background: linear-gradient(to right, blue, green, yellow, red); /* Color gradient */
+      margin-bottom: 5px; /* Space between gradient and label */
+    }
+
+    /* Label for Heatmap Legend */
+    #legendLabel {
+      text-align: center;
+      font-size: 14px;
+      font-family: 'Futuristic', sans-serif; /* Use custom font */
+      color: #333; /* Dark text for contrast */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Toggle Buttons -->
+  <button id="toggleMarkersBtn">Toggle Markers</button>
+  <button id="toggleAuroraHeatmapBtn">Toggle Aurora Heatmap</button>
+  <button id="toggleSolarWindBtn">Toggle Solar Wind</button> <!-- New button added -->
+
+  <!-- Heatmap Legend -->
+  <div id="legendContainer">
+    <div id="legendGradient"></div>
+    <div id="legendLabel">Aurora Visibility (Blue = Low, Red = High)</div>
+  </div>
+
+  <!-- Hidden container for heatmap.js rendering -->
+  <div id="heatmapContainer"></div>
+
+  <!-- Include external libraries from CDNs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/heatmap.js/2.0.0/heatmap.js"></script>
+
+  <!-- Include custom scripts -->
+  <script src="DataPlot.js"></script>
+  <script src="auroraHeatmap.js"></script>
+  <script src="solarWindAnimation.js"></script> <!-- Already included -->
+  <script src="3D.js"></script>
+
+  <script>
+    // Fetch and parse CSV for aurora data, then create the aurora heatmap
+    fetch('data/aurora_data_survey.csv')
+      .then(response => response.text()) // Get the CSV as text
+      .then(csvText => {
+        const parsedAuroraData = Papa.parse(csvText, { header: true }).data; // Parse CSV into objects
+        createAuroraHeatmap(parsedAuroraData); // Pass data to heatmap creation function
+      })
+      .catch(error => console.error('Error loading or parsing Aurora CSV:', error)); // Log any errors
+
+    // Fetch and parse CSV for disruptions, then create markers
+    fetch('data/disruption_data_survey.csv')
+      .then(response => response.text()) // Get the CSV as text
+      .then(csvText => {
+        const parsedData = Papa.parse(csvText, { header: true }).data; // Parse CSV into objects
+        createDisruptionMarkers(parsedData); // Pass data to marker creation function
+      })
+      .catch(error => console.error('Error loading or parsing CSV:', error)); // Log any errors
+
+    // Add event listeners to toggle buttons
+    document.getElementById('toggleMarkersBtn').addEventListener('click', toggleMarkers); // Toggle markers
+    document.getElementById('toggleAuroraHeatmapBtn').addEventListener('click', toggleAuroraHeatmap); // Toggle aurora heatmap
+    document.getElementById('toggleSolarWindBtn').addEventListener('click', toggleParticles); // Toggle solar wind particles
+  </script>
+</body>
+</html>
