@@ -1,4 +1,4 @@
-let markers = [];  // Array to store both visible and invisible markers
+let markers = [];  // Array to store both visible and invisible markers (invisible markers are basically a hitbox for detecting if the user has hovered over them)
 
 // Function to convert latitude and longitude into Cartesian coordinates
 // This is essential for plotting locations on a 3D sphere
@@ -6,18 +6,18 @@ function latLongToVector3(lat, lon, radius) {
     const phi = (90 - lat) * (Math.PI / 180);  // Convert latitude to polar angle
     const theta = (lon + 180) * (Math.PI / 180);  // Convert longitude to azimuthal angle
 
-    // Calculate the x, y, z coordinates based on spherical coordinate system
+    // Calculate the x, y, z coordinates based on the spherical coordinate system
     const x = -((radius) * Math.sin(phi) * Math.cos(theta));
     const y = (radius) * Math.cos(phi);
     const z = (radius) * Math.sin(phi) * Math.sin(theta);
 
-    return new THREE.Vector3(x, y, z);  // Return as a THREE.js Vector3
+    return new THREE.Vector3(x, y, z);  
 }
 
 // Function to create markers at specific latitude and longitude locations
 function createDisruptionMarkers(data) {
     const markerGeometry = new THREE.SphereGeometry(0.004, 8, 8);  // Small sphere for visible marker
-    const invisibleMarkerGeometry = new THREE.SphereGeometry(0.02, 8, 8);  // Larger invisible marker for interaction
+    const invisibleMarkerGeometry = new THREE.SphereGeometry(0.02, 8, 8);  // Larger invisible marker for interaction 
 
     data.forEach((disruption) => {
         const lat = parseFloat(disruption['Geographic latitude (deg)']);
@@ -39,15 +39,15 @@ function createDisruptionMarkers(data) {
         marker.renderOrder = 2;  // Render markers on top of other objects
         scene.add(marker);  // Add the visible marker to the scene
 
-        // Create an invisible marker for raycasting (interaction)
+        // Create an invisible marker for interaction
         const invisibleMarkerMaterial = new THREE.MeshBasicMaterial({
             color: 0x000000,
-            opacity: 0,  // Fully transparent
-            transparent: true  // Enable transparency
+            opacity: 0,  
+            transparent: true  
         });
         const invisibleMarker = new THREE.Mesh(invisibleMarkerGeometry, invisibleMarkerMaterial);
         invisibleMarker.position.copy(position);  // Same position as visible marker
-        invisibleMarker.renderOrder = 2;  // Ensure it's on top
+        invisibleMarker.renderOrder = 2;  // Ensure invisible marker is on top of all 3D objects so interaction works
         scene.add(invisibleMarker);  // Add the invisible marker to the scene
 
         // Store additional information (description and UTC time) in the marker's userData
