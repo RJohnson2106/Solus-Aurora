@@ -28,7 +28,7 @@ function parseOMNIData(data) {
 
 // Create the solar wind particle system with a trailing effect
 function createSolarWindAnimation(scene, earth, solarWindData) {
-    const particleCount = 1000; // Number of particles
+    const particleCount = 1000; 
     const trailLength = 10; // Number of points in each particle's trail
     const particles = new THREE.BufferGeometry(); // Create particle geometry
 
@@ -42,7 +42,7 @@ function createSolarWindAnimation(scene, earth, solarWindData) {
 
     // Material for particle system with glow and transparency
     const particleMaterial = new THREE.PointsMaterial({
-        size: 0.2, // Size of particles
+        size: 0.2, 
         transparent: true, 
         map: glowTexture, // Use glow texture
         depthWrite: false, // Glow should appear over other objects
