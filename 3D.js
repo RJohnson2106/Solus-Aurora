@@ -1,15 +1,16 @@
 // Prevent browser zooming on scroll (with ctrl) or touch gestures
 window.addEventListener('wheel', function(event) {
   if (event.ctrlKey) {
-      event.preventDefault(); // Disable zoom when using ctrl + scroll
+      event.preventDefault(); // Here to disable zoom when using ctrl + scroll
   }
 }, { passive: false }); // Ensure the event listener is not passive for prevention
 
+// Disable zoom gestures on touch devices
 window.addEventListener('gesturestart', function(event) {
-  event.preventDefault(); // Disable zoom gestures on touch devices
+  event.preventDefault(); 
 });
 
-// THREE.js Loading Manager to manage assets loading
+// THREE.js Loading Manager
 const loadingManager = new THREE.LoadingManager();
 
 // Inject custom font style into the page
@@ -28,15 +29,15 @@ style.innerHTML = `
 `;
 document.head.appendChild(style); // Append custom font styles to the document
 
-// Optional loading screen setup
+// Loading screen setup code
 const loadingScreen = document.createElement('div');
-loadingScreen.style.position = 'fixed'; // Fullscreen, fixed position
+loadingScreen.style.position = 'fixed'; 
 loadingScreen.style.top = '0';
 loadingScreen.style.left = '0';
 loadingScreen.style.width = '100%';
 loadingScreen.style.height = '100%';
-loadingScreen.style.backgroundColor = 'black'; // Black background
-loadingScreen.style.display = 'flex'; // Center content
+loadingScreen.style.backgroundColor = 'black'; 
+loadingScreen.style.display = 'flex'; 
 loadingScreen.style.flexDirection = 'column';
 loadingScreen.style.alignItems = 'center';
 loadingScreen.style.justifyContent = 'center';
@@ -49,19 +50,21 @@ const loadingBar = document.createElement('div');
 loadingBar.style.width = '80%';
 loadingBar.style.height = '20px';
 loadingBar.style.backgroundColor = 'grey';
-loadingBar.style.borderRadius = '10px'; // Rounded edges for the bar
+loadingBar.style.borderRadius = '10px'; 
 loadingBar.style.overflow = 'hidden';
-loadingBar.style.position = 'relative'; // Relative positioning for inner bar
+loadingBar.style.position = 'relative'; 
 loadingScreen.appendChild(loadingBar);
 
+// Green bar for showing the loading progress
 const loadingProgress = document.createElement('div');
-loadingProgress.style.height = '100%'; // Full height of the parent (loadingBar)
-loadingProgress.style.width = '0%'; // Start with 0% width
-loadingProgress.style.backgroundColor = 'green'; // Progress bar color
-loadingProgress.style.transition = 'width 0.5s'; // Smooth width transition
-loadingBar.appendChild(loadingProgress); // Append progress bar to loading bar
+loadingProgress.style.height = '100%'; 
+loadingProgress.style.width = '0%';
+loadingProgress.style.backgroundColor = 'green'; 
+loadingProgress.style.transition = 'width 0.5s'; 
+loadingBar.appendChild(loadingProgress); 
 
-document.body.appendChild(loadingScreen); // Attach loading screen to document body
+// Attach loading screen to document body
+document.body.appendChild(loadingScreen); 
 
 // Loading manager events
 loadingManager.onStart = function(url, itemsLoaded, itemsTotal) {
@@ -124,8 +127,8 @@ function createStars() {
   const starMaterial = new THREE.PointsMaterial({
       size: 0.2,
       map: starTexture,
-      transparent: true, // Transparent background for stars
-      color: 0xffffff // Star color (white)
+      transparent: true, 
+      color: 0xffffff 
   });
 
   // Add star points to the scene
@@ -136,42 +139,42 @@ function createStars() {
 createStars(); // Call function to add stars to the scene
 
 // Ambient light for basic illumination
-const ambientLight = new THREE.AmbientLight(0x404040, 6); // Brighten the scene
+const ambientLight = new THREE.AmbientLight(0x404040, 6); 
 scene.add(ambientLight);
 
 // Load and create Earth with texture and normal map
-let earth; // Declare the earth mesh
+let earth; 
 const textureLoader = new THREE.TextureLoader(loadingManager);
 const earthTexture = textureLoader.load('textures/8k_earth_daymap.jpg', function(texture) {
-  const normalMap = textureLoader.load('textures/8k_earth_normal_map.tif'); // Load Earth's normal map
+  const normalMap = textureLoader.load('textures/8k_earth_normal_map.tif'); 
 
   // Material for Earth (less shiny with roughness/metalness values)
   const earthMaterial = new THREE.MeshStandardMaterial({
       map: texture,
       normalMap: normalMap,
-      roughness: 0.7, // Reduce reflectivity
-      metalness: 0.1 // Minimal metal-like shine
+      roughness: 0.7, 
+      metalness: 0.1 
   });
 
-  const earthGeometry = new THREE.SphereGeometry(1, 256, 256); // High-resolution sphere geometry for Earth
+  const earthGeometry = new THREE.SphereGeometry(1, 256, 256); 
   earth = new THREE.Mesh(earthGeometry, earthMaterial);
-  scene.add(earth); // Add Earth to the scene
+  scene.add(earth);
 
   // Add moon orbiting around Earth
   const moonTexture = textureLoader.load('textures/8k_moon.jpg', function(texture) {
       const moonMaterial = new THREE.MeshStandardMaterial({
           map: texture,
-          roughness: 0.7, // Less reflective moon surface
+          roughness: 0.7, 
           metalness: 0.1
       });
 
-      const moonGeometry = new THREE.SphereGeometry(0.27, 64, 64); // Smaller moon size
+      const moonGeometry = new THREE.SphereGeometry(0.27, 64, 64); 
       const moon = new THREE.Mesh(moonGeometry, moonMaterial);
 
-      moon.position.set(10, 0, 0); // Position moon farther from Earth
+      moon.position.set(10, 0, 0); 
       scene.add(moon);
 
-      renderer.render(scene, camera); // Render the scene after adding the moon
+      renderer.render(scene, camera); 
   });
 
   // Initialize the solar wind effect
@@ -183,10 +186,10 @@ const earthTexture = textureLoader.load('textures/8k_earth_daymap.jpg', function
           new THREE.SphereGeometry(1.005, 512, 512), // Slightly larger sphere for clouds
           new THREE.MeshPhongMaterial({
               map: cloudTexture,
-              transparent: true, // Clouds should be semi-transparent
-              opacity: 1, // Full opacity
-              roughness: 1, // No reflectivity
-              metalness: 0.0, // No shininess
+              transparent: true, 
+              opacity: 1, 
+              roughness: 1, 
+              metalness: 0.0, 
               depthWrite: false // Ensure correct depth rendering for transparency
           })
       );
@@ -198,7 +201,7 @@ const earthTexture = textureLoader.load('textures/8k_earth_daymap.jpg', function
       uniforms: {
           'c': { type: 'f', value: 0.7 },
           'p': { type: 'f', value: 4.5 },
-          glowColor: { type: 'c', value: new THREE.Color(0x3399ff) }, // Blue glow color
+          glowColor: { type: 'c', value: new THREE.Color(0x3399ff) }, 
           viewVector: { value: new THREE.Vector3() } // Camera view vector
       },
       vertexShader: `
@@ -229,12 +232,12 @@ const earthTexture = textureLoader.load('textures/8k_earth_daymap.jpg', function
       `,
       side: THREE.BackSide, // Glow should only be visible from outside
       blending: THREE.AdditiveBlending, // Additive blending for glow effect
-      transparent: true // Allow transparency
+      transparent: true 
   };
 
   // Create atmospheric glow as a slightly larger sphere
   const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(1.03, 64, 64), new THREE.ShaderMaterial(atmosphereShader));
-  scene.add(atmosphere); // Add atmospheric glow to the scene
+  scene.add(atmosphere); 
 
   camera.lookAt(earth.position); // Ensure camera is always looking at Earth
 });
@@ -252,12 +255,12 @@ const spaceTexture = textureLoader.load('textures/8k_stars_milky_way.jpg', funct
 
 // Setup OrbitControls for user interaction (zooming, rotating)
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enableZoom = true; // Allow zooming
-controls.minDistance = 1.2; // Limit how close the camera can zoom
-controls.maxDistance = 10; // Limit how far the camera can zoom out
-controls.enableRotate = true; // Allow rotating the globe
+controls.enableZoom = true; 
+controls.minDistance = 1.2; 
+controls.maxDistance = 10; 
+controls.enableRotate = true; 
 controls.enableDamping = true; // Smooth transitions between movements
-controls.dampingFactor = 0.05; // Adjust smoothness of damping
+controls.dampingFactor = 0.05; 
 
 // Customize mouse and touch controls
 controls.mouseButtons = {
@@ -266,6 +269,7 @@ controls.mouseButtons = {
   RIGHT: THREE.MOUSE.DOLLY // Zoom with right mouse button
 };
 
+// Note: work in progress; touch controls are currently not recommended 
 controls.touches = {
   ONE: THREE.TOUCH.ROTATE, // Rotate with one finger
   TWO: THREE.TOUCH.NONE // Disable panning with two fingers
