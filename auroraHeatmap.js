@@ -1,9 +1,8 @@
 let auroraHeatmap = [];  // Array to store aurora data points
-let heatmapSphere;  // 3D mesh that will hold the heatmap texture
+let heatmapSphere;  // 3D mesh that holds the heatmap texture
 let heatmapInstance;  // Heatmap.js instance to manage the heatmap visualization
 
 // Convert latitude and longitude into Cartesian coordinates (3D vector)
-// This function will be useful for placing objects on a 3D sphere
 function latLongToVector3(lat, lon, radius) {
     const phi = (90 - lat) * (Math.PI / 180);  // Convert latitude to polar angle
     const theta = (lon + 180) * (Math.PI / 180);  // Convert longitude to azimuthal angle
@@ -77,9 +76,9 @@ function createAuroraHeatmap(data) {
     // Initialize heatmap.js instance with custom settings
     heatmapInstance = h337.create({
         container: document.getElementById('heatmapContainer'),  // HTML container for the heatmap
-        radius: 17,  // Radius of each data point
-        maxOpacity: 0.6,  // Maximum opacity of the heatmap
-        minOpacity: 0,  // Minimum opacity (fully transparent)
+        radius: 17,  
+        maxOpacity: 0.6, 
+        minOpacity: 0,  
         blur: 0.75,  // Blur level for smooth transitions
         gradient: {
             0.2: "blue",  // Low intensity color
