@@ -47,8 +47,3 @@ Solus Aurora was selected as a **Global Finalist** in the 2024 NASA Space Apps C
 
 - [NASA Space Apps Challenge 2024](https://www.spaceappschallenge.org/)
 - [Solus Aurora Project Page](https://www.spaceappschallenge.org/nasa-space-apps-2024/find-a-team/solus-aurora/)
-
----
-
-**Solus Aurora**  
-*Turning solar storms into stories that everyone can see.*
