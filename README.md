@@ -23,7 +23,7 @@ Solus Aurora is an interactive data visualization project that showcases the bea
 
 - 📈 **Dynamic Visualizations** of geomagnetic activity using Kp and Dst indices  
 - 🗺️ **Global Heatmaps** showing storm intensity across regions  
-- 📍 **Outage Markers** to show how technology was effected by the storms
+- 📍 **Outage Markers** to show how technology was affected by the storms
 - 🌐 **User-Friendly Interface** for educational outreach
 
 ---
